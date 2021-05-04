@@ -5,11 +5,7 @@
             <div id="drug_choose_area">
                 <label for="drug_list">Choose one item from the list below: </label>
                 <select @change="updateChart" name="drug_list" id="drug_list">
-                    <option value="1">Drug1</option>
-                    <option value="2">Drug2</option>
-                    <option value="3">Drug3</option>
-                    <option value="4">Drug4</option>
-                    <option value="5">Drug5</option>
+                    <option v-bind:key="drug" v-for="drug in drugList">{{drug}}</option>
                 </select>
             </div>
             <ChartDrug :key="componentKey" :type="type" :label="label" :labels="this.labels" :data="this.data" :backgroundColor="this.backgroundColor" :background="this.background" />
@@ -57,7 +53,7 @@
         color: white;
     }
     #drug_prediction_chart {
-        width: 800px;
+        width: 90%;
         height: 400px;
         margin: auto;
         position: relative;
@@ -73,30 +69,42 @@ export default ({
     name: 'Home',
     data() {
         return {
+            drugList: [],
             componentKey: 0,
             type: "line",
             label: "Quantity",
-            labels: ['12.02.2020', '16.02.2020', '1.03.2020', '2.03.2020', '9.03.2020', '12.03.2020', '12.03.2020', '16.03.2020', '13.03.2020', '2.04.2020', '9.04.2020', '12.04.2020'],
-            data: [100, 99, 70, 120, 86, 56, 61, 56, 12, 11, 17, 30],
-            backgroundColor: '#EF6C00',
-            background: '#EF6C00',
+            labels: [],
+            data: [],
+            backgroundColor: '#6200EA',
+            background: '#6200EA',
         }
     },
     components: {
         ChartDrug
     },
     async created() {
-        const response = await axios.get('http://localhost:8080/api/v1/predictions', {
-            headers: {
-                Autorization: "Bearer " + localStorage.getItem('token')
-            }
-        }).catch(err => console.log(err));
-        console.log(response);
+        // const response = await axios.get('http://localhost:8080/api/v1/predictions', {
+        //     headers: {
+        //         Autorization: "Bearer " + localStorage.getItem('token')
+        //     }
+        // }).catch(err => console.log(err));
+
+        const drugListData = await axios.get('http://localhost:8080/api/v1/drugs/distinct-names').catch(err => console.log(err));
+        console.log(drugListData);
+        this.drugList = drugListData.data;
+
+        const quantities = await axios.get('http://localhost:8080/api/v1/drugs/get-quantities/?name=' + 'acarbosum').catch(err => console.log(err));
+        const dates = await axios.get('http://localhost:8080/api/v1/drugs/get-dates/?name=' + 'acarbosum').catch(err => console.log(err));
+        this.labels = dates.data;
+        for (let i = 0; i < this.labels.length; ++i) {
+            this.labels[i] = this.labels[i].split('T')[0];
+        }
+        this.data = quantities.data;
+        this.forceRerender();
     },
     methods: {
         forceRerender() {
             this.componentKey += 1;
-            console.log("hehe");
         },
         generateResults() {
             const predicted_quantity = document.querySelector("#predicted_quantity");
@@ -146,9 +154,21 @@ export default ({
                 this.background = '#000000'
             }
         },
-        updateChart(event) {
-            this.generateChartConfig(event.target.value);
-            console.log(event.target.value);
+        async updateChart(event) {
+            // this.generateChartConfig(event.target.value);
+            const drugName = event.target.value;
+            const quantities = await axios.get('http://localhost:8080/api/v1/drugs/get-quantities/?name=' + drugName).catch(err => console.log(err));
+            const dates = await axios.get('http://localhost:8080/api/v1/drugs/get-dates/?name=' + drugName).catch(err => console.log(err));
+            console.log(quantities.data);
+            console.log(dates.data);
+
+            this.labels = dates.data;
+            for (let i = 0; i < this.labels.length; ++i) {
+                this.labels[i] = this.labels[i].split('T')[0];
+            }
+            this.data = quantities.data;
+            this.forceRerender();
+            console.log("aici");
         }
     }
 })

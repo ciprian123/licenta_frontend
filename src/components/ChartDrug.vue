@@ -6,7 +6,7 @@
 
 <style scoped>
 #drug_prediction_chart {
-    width: 800px;
+    width: 80%;
     height: 400px;
     margin: auto;
     position: relative;
