@@ -24,7 +24,7 @@
 <style scoped>
     #prediction_area {
         width: 100%;
-        height: 800px;
+        height: 1000px;
         background: #ECEFF1;
         position: relative;
         top: 90px;
