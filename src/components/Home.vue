@@ -22,9 +22,13 @@
     </div>
 </template>
 <style scoped>
+    body {
+        background: white;
+    }
     #prediction_area {
-        width: 100%;
-        height: 900px;
+        margin: auto;
+        width: 90%;
+        height: 1150px;
         background: #ECEFF1;
         position: relative;
         top: 90px;
