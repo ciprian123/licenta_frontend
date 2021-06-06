@@ -6,7 +6,8 @@
 
 <style>
     footer {
-        background: #3D5AFE;
+        /* background: #3D5AFE; */
+        background: url('../assets/wallpaper__.jpg');
         width: 100%;
         height: 200px;
         margin-top: 100px;

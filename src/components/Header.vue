@@ -25,7 +25,8 @@ export default ({
     header {
         width: 100%;
         height: 90px;
-        background: #E65100;
+        /* background: #E65100; */
+        background: url('../assets/wallpaper_.jpg');
         position: absolute;
         top: 0;
     }
