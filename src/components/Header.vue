@@ -46,15 +46,26 @@ export default ({
         display: inline;
     }
     nav ul li a {
-        padding: 7px 15px;
+        padding: 7px 10px;
+        margin-right: 15px;
+        padding-left: 2px;
         color: #ECEFF1;
         text-decoration: none;
         font-weight: bold;
     }
     .router-link-active {
         color: #263238;
-        border-radius: 3px;
         font-weight: bold;
+        padding-bottom: 33px;
+        border-bottom: 5px solid #263238;
+    }
+    #prediction_icon, #trending_icon {
+        width: 28px;
+        height: 28px;
+    }
+    #statistics_icon {
+        width: 26px;
+        height: 26px;
     }
 </style>
 <script>
