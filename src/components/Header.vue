@@ -2,13 +2,11 @@
     <header>
         <h4>My prediction app</h4>
         <nav>
-            <ul>
-                <li>
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="#">Sign up</a>
-                </li>
+            <ul id="navigation_link_list">
+                <li><router-link to="predictions">Predictions</router-link></li>
+                <li><router-link to="trending">Trending</router-link></li>
+                <li><router-link to="patient-stats">Patient statistics</router-link></li>
+                <li><router-link id="login_link" to="login">Logout</router-link></li>
             </ul>
         </nav>
     </header>    
@@ -48,9 +46,36 @@ export default ({
         display: inline;
     }
     nav ul li a {
-        padding: 0 12px;
+        padding: 7px 15px;
         color: #ECEFF1;
         text-decoration: none;
         font-weight: bold;
     }
+    .router-link-active {
+        color: #263238;
+        border-radius: 3px;
+        font-weight: bold;
+    }
 </style>
+<script>
+export default({
+    name: 'Header',
+    methods: {
+        mark_as_active_predictions() {
+            document.querySelector("#predictions_link").classList.add("active");
+            document.querySelector("#trending_link").classList.remove("active");
+            document.querySelector("#predictions_link").classList.remove("active");
+        },
+        mark_as_active_trending() {
+            document.querySelector("#predictions_link").classList.remove("active");
+            document.querySelector("#trending_link").classList.add("active");
+            document.querySelector("#predictions_link").classList.remove("active");
+        },
+        mark_as_active_patient_stats() {
+            document.querySelector("#predictions_link").classList.remove("active");
+            document.querySelector("#trending_link").classList.remove("active");
+            document.querySelector("#predictions_link").classList.add("active");
+        }
+    }
+})
+</script>
