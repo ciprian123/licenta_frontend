@@ -3,21 +3,16 @@
         <h4>My prediction app</h4>
         <nav>
             <ul id="navigation_link_list">
-                <li><router-link to="predictions">Predictions</router-link></li>
-                <li><router-link to="trending">Trending</router-link></li>
-                <li><router-link to="patient-stats">Patient statistics</router-link></li>
-                <li><router-link id="login_link" to="login">Logout</router-link></li>
+                <li><router-link v-if="this.hadSavedToken" to="predictions"><span @click="check_token">Predictions</span></router-link></li>
+                <li><router-link v-if="this.hadSavedToken" id="trending_link" to="trending"><span @click="check_token">Trending</span></router-link></li>
+                <li><router-link v-if="this.hadSavedToken" id="patient_stats_link" to="patient-stats"><span @click="check_token">Patient statistics</span></router-link></li>
+                <li><router-link v-if="this.hadSavedToken" id="login_link" to="login"><span @click="clear_token">Logout</span></router-link></li>
+                <li><router-link v-if="!this.hadSavedToken" id="login_l_link" to="login"><span @click="check_token">Login</span></router-link></li>
+                <li><router-link v-if="!this.hadSavedToken" id="register_link" to="register"><span @click="check_token">Register</span></router-link></li>
             </ul>
         </nav>
     </header>    
 </template>
-
-<script>
-export default ({
-    name: "Header"
-})
-</script>
-
 
 <style scoped>
     header {
@@ -67,25 +62,34 @@ export default ({
         width: 26px;
         height: 26px;
     }
+    .hidden {
+        display: none;
+    }
 </style>
 <script>
 export default({
     name: 'Header',
+    data() {
+        return {
+            hadSavedToken: localStorage.getItem('cached_user_jwt') !== null
+        }
+    },
+    created() {
+        if (localStorage.getItem('cached_user_jwt') === null) {
+            this.$router.push("/login");
+            this.hadSavedToken = false;
+            return;
+        }
+        this.hadSavedToken = true;
+    },
     methods: {
-        mark_as_active_predictions() {
-            document.querySelector("#predictions_link").classList.add("active");
-            document.querySelector("#trending_link").classList.remove("active");
-            document.querySelector("#predictions_link").classList.remove("active");
+        clear_token() {
+            console.log("Clearing token");
+            localStorage.removeItem('cached_user_jwt');
+            this.$router.go();
         },
-        mark_as_active_trending() {
-            document.querySelector("#predictions_link").classList.remove("active");
-            document.querySelector("#trending_link").classList.add("active");
-            document.querySelector("#predictions_link").classList.remove("active");
-        },
-        mark_as_active_patient_stats() {
-            document.querySelector("#predictions_link").classList.remove("active");
-            document.querySelector("#trending_link").classList.remove("active");
-            document.querySelector("#predictions_link").classList.add("active");
+        check_token() {
+            this.hadSavedToken = localStorage.getItem('cached_user_jwt') !== null;
         }
     }
 })

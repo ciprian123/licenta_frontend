@@ -140,6 +140,11 @@ export default ({
         }
     },
     async created() {
+        if (localStorage.getItem('cached_user_jwt') === null) {
+            this.$router.push("/login");
+            return;
+        }
+        
         const names = await axios.get('http://localhost:8080/api/v1/drugs/most-used-drug-names').catch(err => console.log(err));
         const quantities = await axios.get('http://localhost:8080/api/v1/drugs/most-used-drug-quantities').catch(err => console.log(err));
 

@@ -265,6 +265,10 @@ export default ({
         }
     },
     async created() {
+        if (localStorage.getItem('cached_user_jwt') === null) {
+            this.$router.push("/login");
+            return;
+        }
         if (localStorage.getItem('cached_labels2') != null) {
             this.labels = JSON.parse(localStorage.getItem("cached_labels2"));
             this.data = JSON.parse(localStorage.getItem("cached_data2"));

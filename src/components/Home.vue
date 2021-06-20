@@ -8,7 +8,15 @@
                     <option v-bind:key="drug" v-for="drug in drugList">{{drug}}</option>
                 </select>
             </div>
-            <ChartDrug :key="componentKey" :type="type" :label="label" :labels="this.labels" :data="this.data" :backgroundColor="this.backgroundColor" :background="this.background" />
+
+            <ChartDrug :key="componentKey" 
+                       :type="type" 
+                       :label="label" 
+                       :labels="this.labels" 
+                       :data="this.data" 
+                       :backgroundColor="this.backgroundColor" 
+                       :background="this.background" />
+
             <div class="future_prediction_area">
                 <label for="future_prediction_input">Choose a date in order to predict usage: </label>
                 <input @change="generateResults" type="date" id="start" name="future_prediction_input"
@@ -86,6 +94,10 @@ export default ({
         ChartDrug
     },
     async created() {
+        if (localStorage.getItem('cached_user_jwt') === null) {
+            this.$router.push("/login");
+            return;
+        }
         // const response = await axios.get('http://localhost:8080/api/v1/predictions', {
         //     headers: {
         //         Autorization: "Bearer " + localStorage.getItem('token')
@@ -119,7 +131,11 @@ export default ({
             let date_to_predict = event.target.value;
             let toTimestamp = Date.parse(date_to_predict) / 1000;
             console.log(toTimestamp)
+            
+            
             const predicted_result = await axios.get('http://127.0.0.1:5000/predict?drug=' + selected_drug + '&&timestamp=' + toTimestamp).catch(err => console.log(err));
+            
+            
             if (Number.parseFloat(predicted_result.data) > 0) {
                 document.querySelector("#predicted_quantity").innerHTML = "Quantity: " + predicted_result.data;
             } else {

@@ -12,8 +12,7 @@
             </div>
             <div class="spacer"></div>
             <div class="wrapper">
-                <a href="#" id="forgot_password_link" target="_blank">Forgot password?</a>
-                <a href="#" id="new_user_link" target="_blank">New user?</a>
+                <router-link id="new_user_link" to="register">New user?</router-link>
             </div>
             <button id="login_button" type="submit" value="submit">Submit</button>
         </form>
@@ -40,12 +39,14 @@ export default ({
             const response = await axios.post('http://localhost:8080/api/v1/users/login', data)
                 //  .then(res => console.log(res))
                  .catch(err => console.log(err));
+                 console.log(response.data);
             if (response != undefined && response.status != 200) {
                 console.log('Invalid email of password!');
             } else {
                 // console.log(response.data.token);
-                localStorage.setItem('token', response.data.token);
-                this.$router.push('/predictions')
+                localStorage.setItem('cached_user_jwt', response.data.token);
+                this.$router.push('/predictions');
+                this.$router.go();
             }
         }
     }
