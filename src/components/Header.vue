@@ -29,7 +29,7 @@
         margin: 32px;
     }
     nav {
-        width: 30%;
+        width: 50%;
         float: right;
     }
     nav ul {
@@ -64,6 +64,11 @@
     }
     .hidden {
         display: none;
+    }
+    @media screen and (max-width: 1000px) {
+        nav {
+            width: 70%;
+        }
     }
 </style>
 <script>

@@ -121,8 +121,8 @@ export default ({
             this.componentKey += 1;
         },
         async generateResults(event) {
-            const predicted_quantity = document.querySelector("#predicted_quantity");
-            predicted_quantity.innerHTML = "Quantity: " + Math.random() * 123;
+            //const predicted_quantity = document.querySelector("#predicted_quantity");
+            //predicted_quantity.innerHTML = "Quantity: " + Math.random() * 123;
             console.log(event.target.value);
 
             const selected_drug = document.querySelector("#drug_list").value;
